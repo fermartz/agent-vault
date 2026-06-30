@@ -13,4 +13,10 @@ point back up to these.
 
 *More principles get added as I write them down — section-by-section, smallest-clean-change, code-wins-over-docs, build-in-public.*
 
+### Conventions
+
+| Convention | What it standardizes |
+|---|---|
+| [Keep the Agent's Brain in One Folder](./the-agent-folder.md) | Put all working files (memory, map, tasks, decisions, plans, reviews) in one tool-agnostic `.agent/` directory. |
+
 Back to [the vault](../README.md).

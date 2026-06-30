@@ -35,5 +35,6 @@ one-fact-per-file gives the agent continuity it can't get from context alone.
 
 ## Where it shows up
 
+- Convention: [Keep the Agent's Brain in One Folder](./the-agent-folder.md) — *where* these files live (`.agent/`)
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) ("The files in play" — memory index, map, tasks, decisions)
 - Related principle: [context-hygiene](./context-hygiene.md) (memory is what lets you keep the live context small)

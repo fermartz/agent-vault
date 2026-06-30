@@ -91,9 +91,10 @@ And the same thing as a list — every file, what it is, and when it's touched:
 | **`decisions.md`** → `docs/DECISIONS.md` | Architecture decisions + rationale | Appended when a real choice is made |
 | **source-of-truth docs** (VISION / ARCHITECTURE / SPEC / ROADMAP) | The project's north stars | Read before major changes |
 
-> **Local vs public:** `MEMORY.md`, the map, and the tasks file stay **local (gitignored)** —
-> they're working memory you regenerate as you go. Only `decisions.md` ships publicly (as
-> `docs/DECISIONS.md`). Maps reflect code reality; tasks reflect intent; **code always wins over both.**
+> **Local vs public:** keep these together in one [`.agent/` folder](../playbook/the-agent-folder.md).
+> `MEMORY.md`, the map, and the tasks file stay **local (gitignored)** — they're working memory you
+> regenerate as you go. Only `decisions.md` ships publicly (as `docs/DECISIONS.md`). Maps reflect
+> code reality; tasks reflect intent; **code always wins over both.**
 
 ## 1. Before you build
 

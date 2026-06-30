@@ -6,7 +6,7 @@ summary: "The core loop I run coding agents through to ship production code, usi
 tags: [workflow, planning, code-review, agents, claude-code, codex, verification]
 maturity: battle-tested
 used-in: [Delphy Agent, Delphy, fermartz.com]
-related-playbook: [plan-build-review, adversarial-verification, memory-system, context-hygiene]
+related-playbook: [memory-system, plan-build-review, adversarial-verification, context-hygiene]
 related-skills: [code-review, cross-artifact-sweep]
 ---
 
@@ -21,6 +21,9 @@ and honest.
 
 > Drawn from how I built **Delphy Agent** (Tauri + React, 450+ tests) slice by slice. The lessons
 > and failure-modes below are real — they cost me review rounds before I wrote them down.
+
+> **Want your agent to just *run* this?** Load the executable twin:
+> [`skills/blueprint`](../skills/blueprint/SKILL.md). This page is the *why*; the skill is the *do-this*.
 
 ## When to use this
 
@@ -189,5 +192,5 @@ The builder optimizes for "done"; the independent reviewer optimizes for "wrong.
 expensive failure isn't a bug — it's a review *round* wasted on drift between code and docs. Plan
 small, build small, verify hard, let a skeptic sign off.
 
-**Playbook:** [[plan-build-review]] · [[adversarial-verification]] · [[memory-system]] · [[context-hygiene]]
+**Playbook:** [[memory-system]] · [[plan-build-review]] · [[adversarial-verification]] · [[context-hygiene]]
 **Skills:** [[code-review]] · [[cross-artifact-sweep]]

@@ -1,10 +1,10 @@
 ---
 name: blueprint
 description: "Run a non-trivial coding change through plan → build → verify → review, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
-version: 0.1.0
-maturity: battle-tested
-related-workflow: the-blueprint
 metadata:
+  version: 1.0.0
+  maturity: battle-tested
+  related-workflow: the-blueprint
   tags: [workflow, planning, code-review, verification, agents]
 ---
 

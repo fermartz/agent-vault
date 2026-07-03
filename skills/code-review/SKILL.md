@@ -1,11 +1,11 @@
 ---
 name: code-review
 description: "Adversarially review an uncommitted diff (or a PR) for bugs, spec compliance, missing tests, security, scope creep, and overengineering. Output APPROVED or REQUEST_CHANGES with concrete findings. Use when the user says 'review this', 'review the diff', 'code review', or as the review step in the Blueprint."
-version: 0.1.0
-maturity: battle-tested
-related-workflow: the-blueprint
-related-playbook: [adversarial-verification]
 metadata:
+  version: 1.0.0
+  maturity: battle-tested
+  related-workflow: the-blueprint
+  related-playbook: [adversarial-verification]
   tags: [code-review, verification, bugs, security, agents]
 ---
 

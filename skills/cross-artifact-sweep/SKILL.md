@@ -1,11 +1,11 @@
 ---
 name: cross-artifact-sweep
 description: "After changing code, sweep the docs and memory so they don't drift from reality. List what changed, grep each removed/changed term across memory, source map, tasks, decisions, and the plan, then update or contextualize every hit. Use after a fix and before re-issuing a review, or before claiming a task done."
-version: 0.1.0
-maturity: battle-tested
-related-workflow: the-blueprint
-related-playbook: [memory-system, plan-build-review]
 metadata:
+  version: 1.0.0
+  maturity: battle-tested
+  related-workflow: the-blueprint
+  related-playbook: [memory-system, plan-build-review]
   tags: [docs, memory, consistency, verification, agents]
 ---
 

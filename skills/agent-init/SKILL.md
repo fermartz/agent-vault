@@ -1,11 +1,11 @@
 ---
 name: agent-init
 description: "Scaffold the .agent/ working-memory folder in a fresh or existing repo: create memory.md, map.md, tasks.md, decisions.md, plans/ and reviews/, gitignore the folder, and generate the initial source map by crawling the code. Use when the user says 'set up the agent folder', 'init agent memory', 'create the source map', or when the Blueprint starts in a repo that has no .agent/ yet."
-version: 0.1.0
-maturity: experimental
-related-workflow: the-blueprint
-related-playbook: [memory-system, the-agent-folder, context-hygiene]
 metadata:
+  version: 0.1.0
+  maturity: experimental
+  related-workflow: the-blueprint
+  related-playbook: [memory-system, the-agent-folder, context-hygiene]
   tags: [memory, source-map, bootstrap, setup, agents]
 ---
 

@@ -1,11 +1,11 @@
 ---
 name: public-repo-audit
 description: "Audit an entire public repository the way a skeptical senior engineer (or a recruiter evaluating a hire) would read it. Grade code quality, security, tooling rigor, tests, and hygiene; report findings with severity + file:line. Use when the user says 'audit this repo', 'review the whole codebase', 'is this repo interview-ready', or wants a public repo hardened before sharing."
-version: 0.1.0
-maturity: battle-tested
-related-workflow: the-blueprint
-related-playbook: [adversarial-verification]
 metadata:
+  version: 1.0.0
+  maturity: battle-tested
+  related-workflow: the-blueprint
+  related-playbook: [adversarial-verification]
   tags: [audit, code-review, security, ci, tests, hygiene, public-repo]
 ---
 

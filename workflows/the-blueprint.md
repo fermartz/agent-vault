@@ -129,6 +129,9 @@ Run the project's full verification suite:
 git diff --check  # trailing whitespace, conflict markers
 ```
 
+For anything with a runtime surface, **exercise the changed flow end-to-end** — run the app, hit
+the endpoint, click the button. A green suite proves the tests pass, not that the feature works.
+
 Then hand the reviewer a tailored, **adversarial** prompt. The one I use:
 ```
 codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
@@ -137,6 +140,13 @@ the only file you may create is the review report. Be concise: output ONLY APPRO
 REQUEST_CHANGES followed by a one-line summary. If REQUEST_CHANGES, write full details to
 .agent/reviews/<task>.md"
 ```
+
+`codex exec` is just my current second model — the requirement is **a different model with no
+shared context**, not Codex specifically. Swap in whatever you have (`gemini`, a separate Claude
+Code session). No second model installed? A **fresh session of the same model** with the same
+adversarial prompt is weaker but far better than self-review in the same conversation — the bias
+to defend is mostly *context* attachment, only partly model identity.
+
 - **REQUEST_CHANGES** → read the review, fix blockers, run the sweep (§3), re-verify, re-review.
 - **APPROVED** → proceed. Record the verdict in the task's DONE entry.
 

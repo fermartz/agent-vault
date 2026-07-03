@@ -42,7 +42,9 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
    speculative abstractions, no comments unless the *why* is non-obvious. Never touch secrets/.env.
 
 3. **Verify** — run the project's suite: tests, lint/typecheck, schema/artifact checks,
-   `git diff --check`. Fix anything red before review.
+   `git diff --check`. For changes with a runtime surface, also exercise the changed flow
+   end-to-end — a green suite proves the tests pass, not that the feature works. Fix anything
+   red before review.
 
 4. **Hand off to the reviewer** — give the user an adversarial review command for a *second* model:
    ```
@@ -51,6 +53,9 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
    the only file you may create is the review report. Output ONLY APPROVED or REQUEST_CHANGES
    + a one-line summary; if REQUEST_CHANGES, write details to .agent/reviews/<task>.md"
    ```
+   Codex is an example — any second model works (`gemini`, a separate Claude Code session). If
+   none is available, use a **fresh session of the same model** with the same prompt: weaker,
+   but far better than self-review in the same conversation.
 
 5. **If REQUEST_CHANGES** — read the review, fix the blockers, then run the **cross-artifact sweep**
    (see [`skills/cross-artifact-sweep`](../cross-artifact-sweep/SKILL.md)): list what changed, grep

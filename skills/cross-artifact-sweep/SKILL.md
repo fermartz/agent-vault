@@ -25,7 +25,14 @@ bugs. Run it **after every fix, before re-review**, and again as a final pass be
 
 1. **List what changed.** Concretely: identifiers added/removed, file paths created/moved/deleted,
    and design phrases that no longer match reality (e.g. "stdin writer task" → "inline write").
-   Write it down; don't trust memory.
+   Write it down; don't trust memory. Supplement the hand-written list from the diff — it catches
+   the renames a tired agent forgets, while the hand-written list covers design phrases grep
+   can't derive:
+   ```bash
+   # candidate removed identifiers — merge into the hand-written list, don't replace it
+   git diff --unified=0 | grep '^-' | grep -oE '[A-Za-z_][A-Za-z0-9_]{3,}' | sort -u
+   git diff --name-status | grep -E '^[RD]'   # moved / deleted files
+   ```
 2. **Grep each removed/changed term** across the written record: memory index, source map, tasks
    file, decisions log, architecture docs, and the active plan. Cast wider than feels necessary.
    ```

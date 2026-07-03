@@ -6,7 +6,7 @@ diagram of the files in play.
 
 | Workflow | What it is |
 |---|---|
-| [The Blueprint](./the-blueprint.md) | Plan → build → review → ship, with a second model as the skeptic. My default loop for any non-trivial change. |
+| [The Blueprint](./the-blueprint.md) | Plan → build → verify → review → ship, with a second model as the skeptic. My default loop for any non-trivial change. |
 
 *More workflows get added as I write them down — e.g. public-repo hardening, debugging a dead service, brainstorm → plan.*
 

@@ -1,6 +1,6 @@
 ---
 title: "The Blueprint"
-tagline: "Plan → build → review → ship, with a second model as the skeptic."
+tagline: "Plan → build → verify → review → ship, with a second model as the skeptic."
 type: workflow
 summary: "The core loop I run coding agents through to ship production code, using a second model as an adversarial reviewer. Keeps quality high and review rounds short."
 tags: [workflow, planning, code-review, agents, claude-code, codex, verification]
@@ -12,7 +12,7 @@ related-skills: [code-review, cross-artifact-sweep]
 
 # The Blueprint
 
-*Plan → build → review → ship, with a second model as the skeptic.*
+*Plan → build → verify → review → ship, with a second model as the skeptic.*
 
 This is my default operating loop for getting real, production-grade code out of coding agents.
 The headline idea: **one model builds, a *different* model reviews, and nothing ships until an
@@ -36,7 +36,7 @@ trivial change with it. Match the ceremony to the stakes.
 ## The loop
 
 ```
-plan → build → review → fix → SWEEP → verify → re-review (loop until clean) → approve
+plan → build → verify → review → (fix → sweep → verify → re-review)* → approve
 ```
 
 | Role | Who |
@@ -48,7 +48,7 @@ plan → build → review → fix → SWEEP → verify → re-review (loop until
 
 Using a second model as reviewer is the whole point: the builder is biased toward "it works";
 an independent reviewer is biased toward "prove it." That tension is where bugs die.
-(See playbook → [[adversarial-verification]].)
+(See playbook → [Don't Grade Your Own Homework](../playbook/adversarial-verification.md).)
 
 ## The files in play
 
@@ -56,21 +56,21 @@ How information flows through the artifacts (this renders as a diagram on GitHub
 
 ```mermaid
 flowchart TD
-  subgraph mem["memory — local, gitignored"]
-    MEM["MEMORY.md — state index"]
-    MAP["project-map.md — what IS in the code"]
-    TASKS["project-tasks.md — ACTIVE / BACKLOG / DONE"]
+  subgraph mem[".agent/ — local, gitignored"]
+    MEM["memory.md — state index"]
+    MAP["map.md — what IS in the code"]
+    TASKS["tasks.md — ACTIVE / BACKLOG / DONE"]
+    DEC["decisions.md — ships as docs/DECISIONS.md"]
   end
   SOT["source-of-truth docs — VISION / ARCHITECTURE / SPEC"]
-  DEC["decisions.md — ships as docs/DECISIONS.md"]
 
-  mem --> PLAN["plan file — the contract (what + why)"]
+  mem --> PLAN[".agent/plans/&lt;task&gt;.md — the contract (what + why)"]
   SOT --> PLAN
   PLAN --> BUILD["Builder · Claude Code"]
   BUILD --> CODE["code + tests"]
   CODE --> REVIEW{"Reviewer · Codex"}
   PLAN --> REVIEW
-  REVIEW -->|REQUEST_CHANGES| RVW["review file — findings"]
+  REVIEW -->|REQUEST_CHANGES| RVW[".agent/reviews/&lt;task&gt;.md — findings"]
   RVW --> FIX["fix + cross-artifact sweep"]
   FIX --> CODE
   REVIEW -->|APPROVED| SWEEP["end-of-slice sweep"]
@@ -82,23 +82,23 @@ And the same thing as a list — every file, what it is, and when it's touched:
 
 | File | What it is | Touched |
 |---|---|---|
-| **plan file** (`plans/<date>_<feature>.md`) | The contract: what to build + why | Written before coding; boxes checked at the end |
+| **plan file** (`.agent/plans/<date>_<feature>.md`) | The contract: what to build + why | Written before coding; boxes checked at the end |
 | **code + tests** | The actual change | The build step |
-| **review file** (`reviews/<task>.md`) | The reviewer's findings | Written *only* on REQUEST_CHANGES |
-| **`MEMORY.md`** | Always-loaded state index (phase, shipped, paths) | Read at start; updated in the sweep |
-| **`<project>-map.md`** | Source map — what IS in the code | Read before building; updated in the sweep |
-| **`<project>-tasks.md`** | Work items (ACTIVE / BACKLOG / DONE) | Read at start; moved to DONE at the end |
-| **`decisions.md`** → `docs/DECISIONS.md` | Architecture decisions + rationale | Appended when a real choice is made |
+| **review file** (`.agent/reviews/<task>.md`) | The reviewer's findings | Written *only* on REQUEST_CHANGES |
+| **`.agent/memory.md`** | Always-loaded state index (phase, shipped, paths) | Read at start; updated in the sweep |
+| **`.agent/map.md`** | Source map — what IS in the code | Read before building; updated in the sweep |
+| **`.agent/tasks.md`** | Work items (ACTIVE / BACKLOG / DONE) | Read at start; moved to DONE at the end |
+| **`.agent/decisions.md`** → `docs/DECISIONS.md` | Architecture decisions + rationale | Appended when a real choice is made |
 | **source-of-truth docs** (VISION / ARCHITECTURE / SPEC / ROADMAP) | The project's north stars | Read before major changes |
 
 > **Local vs public:** keep these together in one [`.agent/` folder](../playbook/the-agent-folder.md).
-> `MEMORY.md`, the map, and the tasks file stay **local (gitignored)** — they're working memory you
+> `memory.md`, the map, and the tasks file stay **local (gitignored)** — they're working memory you
 > regenerate as you go. Only `decisions.md` ships publicly (as `docs/DECISIONS.md`). Maps reflect
 > code reality; tasks reflect intent; **code always wins over both.**
 
 ## 1. Before you build
 
-1. Read the source map and task file (see [[memory-system]]) — know what *is* in the code before you change it.
+1. Read the source map and task file (see [Give the Agent a Memory](../playbook/memory-system.md)) — know what *is* in the code before you change it.
 2. Read the relevant docs / schemas / examples for the area you're touching.
 3. Identify the files likely to change.
 4. For non-trivial work, **write a short plan and get approval BEFORE coding.**
@@ -132,9 +132,10 @@ git diff --check  # trailing whitespace, conflict markers
 Then hand the reviewer a tailored, **adversarial** prompt. The one I use:
 ```
 codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
-missing tests, security, scope creep, overengineering. Do not modify files. Be concise —
-output ONLY APPROVED or REQUEST_CHANGES followed by a one-line summary. If REQUEST_CHANGES,
-write full details to <reviews-dir>/<task>.md"
+missing tests, security, scope creep, overengineering. Do not modify any project files —
+the only file you may create is the review report. Be concise: output ONLY APPROVED or
+REQUEST_CHANGES followed by a one-line summary. If REQUEST_CHANGES, write full details to
+.agent/reviews/<task>.md"
 ```
 - **REQUEST_CHANGES** → read the review, fix blockers, run the sweep (§3), re-verify, re-review.
 - **APPROVED** → proceed. Record the verdict in the task's DONE entry.
@@ -153,7 +154,8 @@ multi-round loops where each round catches new artifact drift.
 
 > **Failure mode:** patch the one stale reference the reviewer named, re-issue, and round N+1
 > catches three more. The grep in step 2 is the gate. Extra greps cost microseconds; a wasted
-> review round costs minutes plus the reviewer's patience. (See skill → [[cross-artifact-sweep]].)
+> review round costs minutes plus the reviewer's patience.
+> (See skill → [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md).)
 
 ## 4. End-of-slice sweep (before saying "done")
 
@@ -193,5 +195,5 @@ The builder optimizes for "done"; the independent reviewer optimizes for "wrong.
 expensive failure isn't a bug — it's a review *round* wasted on drift between code and docs. Plan
 small, build small, verify hard, let a skeptic sign off.
 
-**Playbook:** [[memory-system]] · [[plan-build-review]] · [[adversarial-verification]] · [[context-hygiene]]
-**Skills:** [[code-review]] · [[cross-artifact-sweep]]
+**Playbook:** [memory-system](../playbook/memory-system.md) · [plan-build-review](../playbook/plan-build-review.md) · [adversarial-verification](../playbook/adversarial-verification.md) · [context-hygiene](../playbook/context-hygiene.md)
+**Skills:** [code-review](../skills/code-review/SKILL.md) · [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md)

@@ -48,6 +48,10 @@ For REQUEST_CHANGES, list each finding with **severity (HIGH/MED/LOW), file:line
 concrete fix.** Be specific — cite real lines, not vibes. List what's done *right* separately so the
 verdict is fair.
 
+**When running as the Blueprint's review step:** reply with only the verdict line and write the
+full findings to `.agent/reviews/<task>.md` instead — the builder reads the file, and the short
+reply keeps its context clean. Standalone, put the findings in the response as above.
+
 ## Notes
 - Skepticism is the value. "Looks fine" is not a review.
 - If verifying a claim or finding (not code), the same stance applies: try to refute it; assume it's wrong until it survives.

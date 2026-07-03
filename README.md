@@ -45,7 +45,7 @@ skills it uses; every skill points back to the principle behind it. Enter from a
 The one workflow that captures my whole approach:
 
 ### → [The Blueprint](./workflows/the-blueprint.md)
-*Plan → build → review → ship, with a second model as the skeptic.*
+*Plan → build → verify → review → ship, with a second model as the skeptic.*
 
 One model builds, a **different** model reviews adversarially, and nothing ships until that
 independent pass approves it. It includes the real loop, a diagram of every file involved, and
@@ -66,8 +66,9 @@ Every doc declares how proven it is, so you know what you're getting:
 
 ## Status
 
-Growing in public. The Blueprint is live; the rest of the playbook, more workflows, and the skills
-library are being added piece by piece (same way I build everything).
+Growing in public. Live today: four playbook principles plus the `.agent/` convention, the
+Blueprint workflow, and four skills. More of each gets added piece by piece (same way I build
+everything).
 
 ## About
 

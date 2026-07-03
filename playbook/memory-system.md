@@ -20,7 +20,7 @@ one-fact-per-file gives the agent continuity it can't get from context alone.
 
 ## In practice
 
-- **An always-loaded index** (`MEMORY.md`): one line per memory, loaded every session.
+- **An always-loaded index** (`.agent/memory.md`): one line per memory, loaded every session.
 - **One fact per file**, with frontmatter (what it is, when it's relevant) so recall is by relevance, not by scrolling.
 - **A source map** (what *is* in the code) and a **tasks file** (what needs to change), kept separate.
 - Update memory *after* structural changes and decisions, not "later." Stale memory is worse than none.

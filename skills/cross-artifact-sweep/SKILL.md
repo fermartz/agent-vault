@@ -29,7 +29,7 @@ bugs. Run it **after every fix, before re-review**, and again as a final pass be
 2. **Grep each removed/changed term** across the written record: memory index, source map, tasks
    file, decisions log, architecture docs, and the active plan. Cast wider than feels necessary.
    ```
-   grep -rn 'oldName\|old_path\|removed_term' MEMORY.md *-map.md *-tasks.md docs/ plans/
+   grep -rn 'oldName\|old_path\|removed_term' .agent/ docs/
    ```
 3. **For each hit, decide:** (a) update to the shipped wording, or (b) contextualize as history
    ("plan initially proposed X; review round N changed it to Y"). Both are valid; **silence is not.**

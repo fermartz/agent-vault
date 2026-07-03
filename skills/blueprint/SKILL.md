@@ -1,6 +1,6 @@
 ---
 name: blueprint
-description: "Run a non-trivial coding change through plan → build → review → verify, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
+description: "Run a non-trivial coding change through plan → build → verify → review, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
 version: 0.1.0
 maturity: battle-tested
 related-workflow: the-blueprint
@@ -24,7 +24,7 @@ or kicks off a non-trivial feature / refactor / subsystem.
 ## The loop
 
 ```
-plan → build → review → fix → SWEEP → verify → re-review (until clean) → approve
+plan → build → verify → review → (fix → sweep → verify → re-review)* → approve
 ```
 One model builds; a **different** model reviews. Nothing ships until the independent review approves.
 
@@ -33,8 +33,8 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
 1. **Before building**
    - Read the memory index, source map, and tasks file. Read relevant docs/schemas/examples.
    - Identify the files likely to change.
-   - Write a **concise plan (< 200 lines)** to the plans dir: purpose, success criteria, scope
-     (in/out), locked decisions, checkpoints, risks. NOT pseudocode or type signatures.
+   - Write a **concise plan (< 200 lines)** to `.agent/plans/<date>_<task>.md`: purpose, success
+     criteria, scope (in/out), locked decisions, checkpoints, risks. NOT pseudocode or type signatures.
    - **Get the user's approval BEFORE writing code.**
 
 2. **Build** — smallest clean change that satisfies the task. No unrelated rewrites, no
@@ -46,9 +46,9 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
 4. **Hand off to the reviewer** — give the user an adversarial review command for a *second* model:
    ```
    codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
-   missing tests, security, scope creep, overengineering. Do not modify files. Output ONLY
-   APPROVED or REQUEST_CHANGES + a one-line summary; if REQUEST_CHANGES, write details to
-   <reviews-dir>/<task>.md"
+   missing tests, security, scope creep, overengineering. Do not modify any project files —
+   the only file you may create is the review report. Output ONLY APPROVED or REQUEST_CHANGES
+   + a one-line summary; if REQUEST_CHANGES, write details to .agent/reviews/<task>.md"
    ```
 
 5. **If REQUEST_CHANGES** — read the review, fix the blockers, then run the **cross-artifact sweep**

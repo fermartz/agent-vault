@@ -4,7 +4,7 @@ type: principle
 summary: "An agent's context window is small and resets. Durable knowledge belongs in files, not in the chat."
 maturity: battle-tested
 related-workflows: [the-blueprint]
-related-skills: []
+related-skills: [agent-init]
 ---
 
 # Give the Agent a Memory

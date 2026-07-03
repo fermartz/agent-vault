@@ -48,6 +48,10 @@ For REQUEST_CHANGES, list each finding with **severity (HIGH/MED/LOW), file:line
 concrete fix.** Be specific — cite real lines, not vibes. List what's done *right* separately so the
 verdict is fair.
 
+**Severity gate:** only HIGH and MED findings force REQUEST_CHANGES. LOW findings are advisory —
+list them, but they don't block APPROVED on their own. This keeps the adversarial stance from
+fighting the "keep the loop short" goal: a nit shouldn't trigger a full fix → sweep → re-review cycle.
+
 **When running as the Blueprint's review step:** reply with only the verdict line and write the
 full findings to `.agent/reviews/<task>.md` instead — the builder reads the file, and the short
 reply keeps its context clean. Standalone, put the findings in the response as above.

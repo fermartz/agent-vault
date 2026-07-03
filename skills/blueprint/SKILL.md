@@ -31,7 +31,8 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
 ## Procedure
 
 1. **Before building**
-   - Read the memory index, source map, and tasks file. Read relevant docs/schemas/examples.
+   - Read the memory index, source map, and tasks file. If `.agent/` doesn't exist yet, scaffold
+     it first (see [agent-init](../agent-init/SKILL.md)). Read relevant docs/schemas/examples.
    - Identify the files likely to change.
    - Write a **concise plan (< 200 lines)** to `.agent/plans/<date>_<task>.md`: purpose, success
      criteria, scope (in/out), locked decisions, checkpoints, risks. NOT pseudocode or type signatures.
@@ -54,7 +55,9 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
 5. **If REQUEST_CHANGES** — read the review, fix the blockers, then run the **cross-artifact sweep**
    (see [`skills/cross-artifact-sweep`](../cross-artifact-sweep/SKILL.md)): list what changed, grep
    each removed/changed term across memory + map + tasks + decisions + the plan, update or
-   contextualize every hit, re-verify, re-grep, then re-review. Loop until APPROVED.
+   contextualize every hit, re-verify, re-grep, then re-review. Loop until APPROVED — with a
+   **round budget of 3**: after 3 REQUEST_CHANGES rounds, stop and re-examine the plan with the
+   user. A non-converging loop usually means the plan is over-specified or mis-scoped, not the code.
 
 6. **On APPROVED — end-of-slice sweep** before claiming done: update the state index, the source
    map (list the actual files; re-read moved prose), move the task to DONE with the verdict, log any

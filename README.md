@@ -67,7 +67,7 @@ Every doc declares how proven it is, so you know what you're getting:
 ## Status
 
 Growing in public. Live today: four playbook principles plus the `.agent/` convention, the
-Blueprint workflow, and four skills. More of each gets added piece by piece (same way I build
+Blueprint workflow, and five skills. More of each gets added piece by piece (same way I build
 everything).
 
 ## About

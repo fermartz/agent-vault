@@ -48,3 +48,4 @@ private; durable decisions go public.
 
 - Principle: [Give the Agent a Memory](./memory-system.md) (this is *where* that memory lives)
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) ("The files in play")
+- Skill: [agent-init](../skills/agent-init/SKILL.md) (scaffolds this folder in a new repo)

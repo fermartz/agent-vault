@@ -140,6 +140,11 @@ REQUEST_CHANGES followed by a one-line summary. If REQUEST_CHANGES, write full d
 - **REQUEST_CHANGES** → read the review, fix blockers, run the sweep (§3), re-verify, re-review.
 - **APPROVED** → proceed. Record the verdict in the task's DONE entry.
 
+**Round budget: after 3 REQUEST_CHANGES rounds, stop looping.** A loop that isn't converging
+usually means the *plan* is the problem — over-specified or mis-scoped — not the code. Re-examine
+the plan with the approver before round 4. (That's the 339-line-plan receipt above, encoded as a
+rule instead of a cautionary tale.)
+
 ## 3. Between review iterations (the step everyone skips)
 
 **Blocking step after every fix, before re-issuing the review.** Skipping this is the #1 cause of

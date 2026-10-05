@@ -2,7 +2,7 @@
 name: cross-artifact-sweep
 description: "After changing code, sweep the docs and memory so they don't drift from reality. List what changed, grep each removed/changed term across memory, source map, tasks, decisions, and the plan, then update or contextualize every hit. Use after a fix and before re-issuing a review, or before claiming a task done."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   maturity: battle-tested
   related-workflow: the-blueprint
   related-playbook: [memory-system, plan-build-review]
@@ -20,6 +20,11 @@ bugs. Run it **after every fix, before re-review**, and again as a final pass be
 - Right after fixing code in response to a review, **before** re-issuing the review.
 - Before claiming a task complete.
 - Any time you renamed, moved, or removed something that the docs/memory might still describe.
+
+**Scale it to the change level** ([change levels](../../workflows/the-blueprint.md#size-the-ceremony-change-levels)):
+for an S or M change the final pass is a one-line task note, plus the map if files were added or
+moved. Run the full procedure for L and XL, and for any change that renamed or removed something the
+docs describe.
 
 ## Procedure
 

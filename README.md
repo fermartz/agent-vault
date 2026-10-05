@@ -47,9 +47,10 @@ The one workflow that captures my whole approach:
 ### → [The Blueprint](./workflows/the-blueprint.md)
 *Plan → build → verify → review → ship, with a second model as the skeptic.*
 
-One model builds, a **different** model reviews adversarially, and nothing ships until that
-independent pass approves it. It includes the real loop, a diagram of every file involved, and
-the lessons that cost me review rounds before I wrote them down.
+One model builds, a **different** model reviews adversarially, and no feature or risky change ships
+until that independent pass approves it. Change levels size the ceremony, so a typo doesn't get the
+full loop. It includes the real loop, a diagram of every file involved, and the lessons that cost me
+review rounds before I wrote them down.
 
 ## Using the skills
 

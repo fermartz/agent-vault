@@ -125,6 +125,8 @@ And the same thing as a list — every file, what it is, and when it's touched:
 
 ## 0. Recon — before you plan (the step that kills review rounds)
 
+*Level: L when the change is non-trivial, XL always; S and M skip it.*
+
 Plan v1 must be written from the **territory, not the map in your head.** Before a single plan
 line, the planner runs an exhaustive read-only investigation of everything the plan will touch,
 and the plan cites what was found. Three rules:
@@ -154,7 +156,8 @@ and the plan cites what was found. Three rules:
 1. Read the source map and task file (see [Give the Agent a Memory](../playbook/memory-system.md)) — know what *is* in the code before you change it.
 2. Read the relevant docs / schemas / examples for the area you're touching.
 3. Identify the files likely to change.
-4. For non-trivial work, **write a short plan and get approval BEFORE coding.**
+4. For non-trivial work (L when it warrants one, XL always; never S or M), **write a short plan
+   and get approval BEFORE coding.**
 5. Make the smallest clean change that satisfies the task. No unrelated rewrites.
 
 ### Plan scope and size — keep it a contract, not a spec

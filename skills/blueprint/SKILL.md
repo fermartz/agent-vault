@@ -35,16 +35,15 @@ review approves.
 0. **Rate the change, and say it** (e.g. "S change, about a minute"); the user can bump it. When
    unsure, go one level up. Full table and receipt:
    [change levels](../../workflows/the-blueprint.md#size-the-ceremony-change-levels).
-   - **S, copy** (a title, label, wording): lint/typecheck + the one test that names the text; a
-     one-line task note. Skip steps 1, 2, 5–7.
-   - **M, one screen or module**: S + unit tests + only that area's end-to-end tests and snapshots;
-     show the result. Skip steps 1, 5–6; step 7 is the task note (+ map if files moved).
-   - **L, feature**: the whole procedure below.
+   - **S, copy** (a title, label, wording): no recon, no plan, no review.
+   - **M, one screen or module**: no recon, no plan, no review; read the map first.
+   - **L, feature**: recon and a plan when the change is non-trivial; review.
    - **XL, risky** (security, auth, data writes, a dependency, a schema, the project's boundary
-     files, whatever their size): the whole procedure, plan required.
-   Never S or M: anything on the XL list. The rating sets the checks only; step 8 still holds.
+     files, whatever their size): recon, a plan and the review are all required.
+   Each step below says what it runs at each level. Never S or M: anything on the XL list. The
+   rating sets the checks only; step 8 still holds.
 
-1. **Recon — before planning**
+1. **Recon — before planning** (L when non-trivial, XL always; not S or M)
    - Inventory the live state the plan will touch with **read-only commands**, exhaustively —
      accounts, schemas, dependencies, consumers. If the plan will claim a boundary (security,
      compatibility, cost), enumerate the *entire class* the boundary is drawn over, not just
@@ -55,22 +54,26 @@ review approves.
      command that proves it, actually run before the claim is written.
 
 2. **Before building**
-   - Read the memory index, source map, and tasks file. If `.agent/` doesn't exist yet, scaffold
+   - All levels: read the memory index, source map, and tasks file. If `.agent/` doesn't exist yet, scaffold
      it first (see [agent-init](../agent-init/SKILL.md)). Read relevant docs/schemas/examples.
    - Identify the files likely to change.
-   - Write a **concise plan (< 200 lines)** to `.agent/plans/<date>_<task>.md`: purpose, success
+   - L when non-trivial, XL always (never S or M): write a **concise plan (< 200 lines)** to `.agent/plans/<date>_<task>.md`: purpose, success
      criteria, scope (in/out), locked decisions, checkpoints, risks. NOT pseudocode or type signatures.
-   - **Get the user's approval BEFORE writing code.**
+   - When there is a plan, **get the user's approval BEFORE writing code.**
 
 3. **Build** — smallest clean change that satisfies the task. No unrelated rewrites, no
    speculative abstractions, no comments unless the *why* is non-obvious. Never touch secrets/.env.
 
-4. **Verify** — run the project's suite: tests, lint/typecheck, schema/artifact checks,
-   `git diff --check`. For changes with a runtime surface, also exercise the changed flow
-   end-to-end — a green suite proves the tests pass, not that the feature works. Fix anything
-   red before review.
+4. **Verify**, by level:
+   - **S:** lint/typecheck, the one test that names the text, `git diff --check`.
+   - **M:** S + the unit tests + only the changed area's end-to-end tests and snapshots; show the
+     result.
+   - **L and XL:** the project's full suite (tests, lint/typecheck, schema/artifact checks,
+     `git diff --check`), and for changes with a runtime surface, exercise the changed flow
+     end-to-end; a green suite proves the tests pass, not that the feature works.
+   Fix anything red before moving on.
 
-5. **Hand off to the reviewer** — give the user an adversarial review command for a *second* model:
+5. **Hand off to the reviewer** (L and XL only) — give the user an adversarial review command for a *second* model:
    ```
    codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
    missing tests, security, scope creep, overengineering. Do not modify any project files —
@@ -92,7 +95,8 @@ review approves.
    user. A non-converging loop usually means the plan is over-specified, mis-scoped, or was
    written without recon (step 1), not that the code is subtly wrong.
 
-7. **On APPROVED — end-of-slice sweep** before claiming done: update the state index, the source
+7. **End-of-slice sweep** before claiming done. S and M: a one-line task note, plus the map if
+   files were added or moved. L and XL, on APPROVED: update the state index, the source
    map (list the actual files; re-read moved prose), move the task to DONE with the verdict, log any
    decision, check the plan's boxes. Re-read each artifact after editing.
 

@@ -40,8 +40,9 @@ review approves.
    - **L, feature**: recon and a plan when the change is non-trivial; review.
    - **XL, risky** (security, auth, data writes, a dependency, a schema, the project's boundary
      files, whatever their size): recon, a plan and the review are all required.
-   Each step below says what it runs at each level. Never S or M: anything on the XL list. The
-   rating sets the checks only; step 8 still holds.
+   Each step below says what it runs at each level. Never S or M: anything on the XL list, or a
+   rename, move or removal of anything the docs describe (that is at least L). The rating sets the checks
+   only; step 8 still holds.
 
 1. **Recon — before planning** (L when non-trivial, XL always; not S or M)
    - Inventory the live state the plan will touch with **read-only commands**, exhaustively —
@@ -96,7 +97,7 @@ review approves.
    written without recon (step 1), not that the code is subtly wrong.
 
 7. **End-of-slice sweep** before claiming done. S and M: a one-line task note, plus the map if
-   files were added or moved. L and XL, on APPROVED: update the state index, the source
+   files were added. L and XL, on APPROVED: update the state index, the source
    map (list the actual files; re-read moved prose), move the task to DONE with the verdict, log any
    decision, check the plan's boxes. Re-read each artifact after editing.
 

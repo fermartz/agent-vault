@@ -22,9 +22,9 @@ bugs. Run it **after every fix, before re-review**, and again as a final pass be
 - Any time you renamed, moved, or removed something that the docs/memory might still describe.
 
 **Scale it to the change level** ([change levels](../../workflows/the-blueprint.md#size-the-ceremony-change-levels)):
-for an S or M change the final pass is a one-line task note, plus the map if files were added or
-moved. Run the full procedure for L and XL, and for any change that renamed or removed something the
-docs describe.
+for an S or M change the final pass is a one-line task note, plus the map if files were added.
+Run the full procedure for L and XL. (A change that renames, moves or removes something the docs
+describe is rated L or higher, so it always gets the full sweep.)
 
 ## Procedure
 

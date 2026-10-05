@@ -49,6 +49,8 @@ run only that level's checks. The human can bump any rating. **When unsure, go o
 
 - **Never S or M:** security, auth, anything that writes user data, dependencies, schemas, and the
   files the project lists as boundaries. Those start at XL whatever their size.
+- **At least L:** a rename, move or removal of anything the docs describe (an identifier, a
+  file, a route). The docs need the full sweep, so it can't be S or M.
 - **Stale snapshots are fine for a moment.** An S change may leave generated baselines (screenshots,
   snapshots) stale. The next M-or-larger change refreshes the affected ones and says so.
 - **The levels set the checks, nothing else.** Committing still waits for the human (§4).
@@ -240,8 +242,8 @@ multi-round loops where each round catches new artifact drift.
 
 ## 4. End-of-slice sweep (before saying "done")
 
-For an S or M change the sweep is a one-line task note (plus the map, if files were added or
-moved). For L and XL, the full pass below.
+For an S or M change the sweep is a one-line task note (plus the map, if files were
+added). For L and XL, the full pass below.
 
 The iteration sweep keeps the *loop* short; this final pass — run *after* it converges to
 APPROVED — makes sure nothing structural was missed:

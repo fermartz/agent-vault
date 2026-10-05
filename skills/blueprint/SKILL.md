@@ -24,13 +24,23 @@ or kicks off a non-trivial feature / refactor / subsystem.
 ## The loop
 
 ```
-plan → build → verify → review → (fix → sweep → verify → re-review)* → approve
+recon → plan → build → verify → review → (fix → class-sweep → verify → re-review)* → approve
 ```
 One model builds; a **different** model reviews. Nothing ships until the independent review approves.
 
 ## Procedure
 
-1. **Before building**
+1. **Recon — before planning**
+   - Inventory the live state the plan will touch with **read-only commands**, exhaustively —
+     accounts, schemas, dependencies, consumers. If the plan will claim a boundary (security,
+     compatibility, cost), enumerate the *entire class* the boundary is drawn over, not just
+     the parts that seem relevant.
+   - Verify every external fact (prices, current versions, API defaults, provider behavior)
+     against **live sources at plan time** — never from memory/training data.
+   - **No claim without its command:** every factual claim in the plan cites the read-only
+     command that proves it, actually run before the claim is written.
+
+2. **Before building**
    - Read the memory index, source map, and tasks file. If `.agent/` doesn't exist yet, scaffold
      it first (see [agent-init](../agent-init/SKILL.md)). Read relevant docs/schemas/examples.
    - Identify the files likely to change.
@@ -38,15 +48,15 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
      criteria, scope (in/out), locked decisions, checkpoints, risks. NOT pseudocode or type signatures.
    - **Get the user's approval BEFORE writing code.**
 
-2. **Build** — smallest clean change that satisfies the task. No unrelated rewrites, no
+3. **Build** — smallest clean change that satisfies the task. No unrelated rewrites, no
    speculative abstractions, no comments unless the *why* is non-obvious. Never touch secrets/.env.
 
-3. **Verify** — run the project's suite: tests, lint/typecheck, schema/artifact checks,
+4. **Verify** — run the project's suite: tests, lint/typecheck, schema/artifact checks,
    `git diff --check`. For changes with a runtime surface, also exercise the changed flow
    end-to-end — a green suite proves the tests pass, not that the feature works. Fix anything
    red before review.
 
-4. **Hand off to the reviewer** — give the user an adversarial review command for a *second* model:
+5. **Hand off to the reviewer** — give the user an adversarial review command for a *second* model:
    ```
    codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
    missing tests, security, scope creep, overengineering. Do not modify any project files —
@@ -57,20 +67,27 @@ One model builds; a **different** model reviews. Nothing ships until the indepen
    none is available, use a **fresh session of the same model** with the same prompt: weaker,
    but far better than self-review in the same conversation.
 
-5. **If REQUEST_CHANGES** — read the review, fix the blockers, then run the **cross-artifact sweep**
+6. **If REQUEST_CHANGES** — read the review, then **fix the class, not the instance**: identify
+   each finding's defect *category* and audit everywhere that category can live before revising
+   (one stale admin user → enumerate everything that can hold admin; one wrong price → re-verify
+   every price). Then run the **cross-artifact sweep**
    (see [`skills/cross-artifact-sweep`](../cross-artifact-sweep/SKILL.md)): list what changed, grep
    each removed/changed term across memory + map + tasks + decisions + the plan, update or
    contextualize every hit, re-verify, re-grep, then re-review. Loop until APPROVED — with a
    **round budget of 3**: after 3 REQUEST_CHANGES rounds, stop and re-examine the plan with the
-   user. A non-converging loop usually means the plan is over-specified or mis-scoped, not the code.
+   user. A non-converging loop usually means the plan is over-specified, mis-scoped, or was
+   written without recon (step 1), not that the code is subtly wrong.
 
-6. **On APPROVED — end-of-slice sweep** before claiming done: update the state index, the source
+7. **On APPROVED — end-of-slice sweep** before claiming done: update the state index, the source
    map (list the actual files; re-read moved prose), move the task to DONE with the verdict, log any
    decision, check the plan's boxes. Re-read each artifact after editing.
 
-7. **Do not commit unless explicitly asked.**
+8. **Do not commit unless explicitly asked.**
 
 ## Notes
 - Keep the plan a contract for *what/why*, not a spec for *how* — over-specified plans generate
   review rounds that catch documentation drift, not bugs.
-- The cross-artifact sweep (step 5) is the gate that keeps review loops short. Don't skip it.
+- The cross-artifact sweep (step 6) is the gate that keeps review loops short. Don't skip it.
+- Recon (step 1) is what keeps round 1 short: the reviewer's cheapest wins are facts you asserted
+  from memory instead of checking. (Receipt: 7 REQUEST_CHANGES rounds on fermartz-infra's first
+  RDS plan, 2026-08-23 — nearly all findings were pre-existing live-state facts.)

@@ -36,7 +36,7 @@ trivial change with it. Match the ceremony to the stakes.
 ## The loop
 
 ```
-plan → build → verify → review → (fix → sweep → verify → re-review)* → approve
+recon → plan → build → verify → review → (fix → class-sweep → verify → re-review)* → approve
 ```
 
 | Role | Who |
@@ -95,6 +95,32 @@ And the same thing as a list — every file, what it is, and when it's touched:
 > `memory.md`, the map, and the tasks file stay **local (gitignored)** — they're working memory you
 > regenerate as you go. Only `decisions.md` ships publicly (as `docs/DECISIONS.md`). Maps reflect
 > code reality; tasks reflect intent; **code always wins over both.**
+
+## 0. Recon — before you plan (the step that kills review rounds)
+
+Plan v1 must be written from the **territory, not the map in your head.** Before a single plan
+line, the planner runs an exhaustive read-only investigation of everything the plan will touch,
+and the plan cites what was found. Three rules:
+
+1. **Inventory the live state first.** Whatever the plan touches — cloud accounts, DB schemas,
+   dependency trees, API consumers — enumerate it *completely* with read-only commands before
+   proposing changes. Not "the parts I think matter": if the plan claims a boundary (security,
+   compatibility, cost), enumerate the entire class the boundary is drawn over.
+2. **Verify external facts against live sources, never memory.** Prices, current versions, API
+   defaults, provider behaviors — training data is stale by definition. Every externally-sourced
+   fact in the plan gets checked against the live API/docs at plan time.
+3. **No claim without its command.** Every factual claim in a plan carries the reproducible
+   read-only command that proves it — and the command was actually *run* before the claim was
+   written. If you can't name the command, you're asserting, not knowing. An adversarial reviewer
+   will run it for you, and you will not enjoy the result.
+
+> **Receipt (fermartz-infra, bootstrap+RDS plan, 2026-08-23):** plan v1 quoted a "$14/mo" RDS
+> floor from memory (missed the $3.65 public-IPv4 charge), called Postgres 17 "latest major"
+> (18 was current), and claimed a clean security boundary in an account that — when the reviewer
+> actually looked — held 2 admin console users, 7 admin-attached shell users, and 45 workload
+> roles including several admin-equivalent ones. **Seven REQUEST_CHANGES rounds**, nearly all
+> catching things a pre-plan recon would have surfaced in 30 minutes. The reviewer never had
+> to be clever — it just had to look at reality before I did.
 
 ## 1. Before you build
 
@@ -160,15 +186,22 @@ rule instead of a cautionary tale.)
 **Blocking step after every fix, before re-issuing the review.** Skipping this is the #1 cause of
 multi-round loops where each round catches new artifact drift.
 
-1. **List what the fix changed** — new/removed identifiers, moved file paths, phrases that no longer match reality. Write it down; don't trust memory.
-2. **Grep each removed/changed term** across your memory + map + tasks + decisions + architecture docs + the active plan. Cast wider than feels necessary.
-3. **For each hit, decide:** update to shipped wording, or contextualize as history ("plan initially proposed… review round N caught…"). Silence is not an option.
-4. **Run the verification suite.**
-5. **Re-grep the same terms.** Anything still stale (outside contextualized history) → fix now.
-6. **Only now re-review** — tell the reviewer what changed and what the sweep covered.
+1. **Fix the class, not the instance.** When the reviewer finds a defect, ask "what is the
+   *category* of this defect, and where else does that category live?" — then audit the whole
+   category before revising. One stale admin user means *enumerate everything that can hold
+   admin*; one wrong price means *re-verify every price in the plan*. Fixing only the named
+   instance guarantees the reviewer finds its sibling next round (fermartz-infra: an
+   admin-equivalent role was deleted in round 5; its identically-policied twin was found in
+   round 6 — one `list-roles` sweep would have caught both).
+2. **List what the fix changed** — new/removed identifiers, moved file paths, phrases that no longer match reality. Write it down; don't trust memory.
+3. **Grep each removed/changed term** across your memory + map + tasks + decisions + architecture docs + the active plan. Cast wider than feels necessary.
+4. **For each hit, decide:** update to shipped wording, or contextualize as history ("plan initially proposed… review round N caught…"). Silence is not an option.
+5. **Run the verification suite.**
+6. **Re-grep the same terms.** Anything still stale (outside contextualized history) → fix now.
+7. **Only now re-review** — tell the reviewer what changed and what the sweep covered.
 
 > **Failure mode:** patch the one stale reference the reviewer named, re-issue, and round N+1
-> catches three more. The grep in step 2 is the gate. Extra greps cost microseconds; a wasted
+> catches three more. The grep in step 3 is the gate. Extra greps cost microseconds; a wasted
 > review round costs minutes plus the reviewer's patience.
 > (See skill → [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md).)
 

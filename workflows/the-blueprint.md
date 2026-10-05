@@ -17,7 +17,8 @@ related-skills: [code-review, cross-artifact-sweep]
 This is my default operating loop for getting real, production-grade code out of coding agents.
 The headline idea: **one model builds, a *different* model reviews, and nothing ships until an
 independent adversarial pass approves it.** Everything else here exists to keep that loop short
-and honest.
+and honest. (That's for features and risky changes; a typo gets a lighter path, see
+[change levels](#size-the-ceremony-change-levels).)
 
 > Drawn from how I built **Delphy Agent** (Tauri + React, 450+ tests) slice by slice. The lessons
 > and failure-modes below are real — they cost me review rounds before I wrote them down.

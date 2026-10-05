@@ -2,7 +2,7 @@
 name: blueprint
 description: "Run a non-trivial coding change through plan → build → verify → review, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   maturity: battle-tested
   related-workflow: the-blueprint
   tags: [workflow, planning, code-review, verification, agents]
@@ -19,16 +19,30 @@ the diagram, and the lessons behind each step.
 The user says any of: "use the blueprint", "run the blueprint", "plan and build this properly",
 or kicks off a non-trivial feature / refactor / subsystem.
 
-**Do NOT use for** one-line fixes, typos, or throwaway scripts. Match the ceremony to the stakes.
+**Match the ceremony to the stakes:** step 0 rates the change, and the rating decides how much of the
+loop runs. Throwaway scripts need none of it.
 
 ## The loop
 
 ```
 recon → plan → build → verify → review → (fix → class-sweep → verify → re-review)* → approve
 ```
-One model builds; a **different** model reviews. Nothing ships until the independent review approves.
+One model builds; a **different** model reviews. At L and XL, nothing ships until the independent
+review approves.
 
 ## Procedure
+
+0. **Rate the change, and say it** (e.g. "S change, about a minute"); the user can bump it. When
+   unsure, go one level up. Full table and receipt:
+   [change levels](../../workflows/the-blueprint.md#size-the-ceremony-change-levels).
+   - **S, copy** (a title, label, wording): lint/typecheck + the one test that names the text; a
+     one-line task note. Skip steps 1, 2, 5–7.
+   - **M, one screen or module**: S + unit tests + only that area's end-to-end tests and snapshots;
+     show the result. Skip steps 1, 5–6; step 7 is the task note (+ map if files moved).
+   - **L, feature**: the whole procedure below.
+   - **XL, risky** (security, auth, data writes, a dependency, a schema, the project's boundary
+     files, whatever their size): the whole procedure, plan required.
+   Never S or M: anything on the XL list. The rating sets the checks only; step 8 still holds.
 
 1. **Recon — before planning**
    - Inventory the live state the plan will touch with **read-only commands**, exhaustively —

@@ -30,8 +30,34 @@ and honest.
 - Any non-trivial change (a feature, a refactor, a subsystem) where correctness matters.
 - When you want an audit trail of *what* you built and *why* it was approved.
 
-**When NOT to:** a one-line fix, a typo, a throwaway script. The loop has overhead; don't tax a
-trivial change with it. Match the ceremony to the stakes.
+**How much of it to run:** match the ceremony to the stakes. Rate the change first with the levels
+below. A throwaway script needs none of it.
+
+## Size the ceremony: change levels
+
+The full loop on a one-line change is waste, and skipping it on a risky one is how bugs ship. So
+**rate every change before you start, say the rating out loud** ("S change, about a minute"), and
+run only that level's checks. The human can bump any rating. **When unsure, go one level up.**
+
+| Level | Examples | Checks | Rough time |
+|---|---|---|---|
+| **S: copy** | a title, a label, wording, a comment | the cheap static checks (lint, typecheck) and the one test that names the text; a one-line task note | 1–2 min |
+| **M: one screen or module** | layout, style, one component, one function | S + the unit tests, and only the end-to-end tests and snapshots for that screen or module; show the result | a few min |
+| **L: feature** | a new screen, data logic, several screens or modules | the full loop: a plan if non-trivial, the full suite, end-to-end on real data, **second-model review**, end-of-slice sweep | 10–15 min plus review |
+| **XL: risky** | security, auth, data writes, a new dependency, a schema, anything the project marks as a boundary | L, with the plan required | as long as it takes |
+
+- **Never S or M:** security, auth, anything that writes user data, dependencies, schemas, and the
+  files the project lists as boundaries. Those start at XL whatever their size.
+- **Stale snapshots are fine for a moment.** An S change may leave generated baselines (screenshots,
+  snapshots) stale. The next M-or-larger change refreshes the affected ones and says so.
+- **The levels set the checks, nothing else.** Committing still waits for the human (§4).
+- **Write your project's own table** with its real commands and file names (which test "names the
+  text", which files are boundaries). The levels and the rules above stay the same.
+
+> **Receipt (Brain by Summer AI, 2026-10-05):** changing one page title took about 13 minutes. The
+> agent ran everything: all 84 screenshot baselines, then the full verify with four production
+> builds. The owner: "for a change of just changing the title it should take less than a minute."
+> Brain now rates every change S/M/L/XL first; a title is an S.
 
 ## The loop
 
@@ -147,6 +173,9 @@ details (state machines, pseudocode, exact type signatures, message shapes) belo
 
 ## 2. Before you finish
 
+This section is the L and XL path. An S or M change runs only its level's checks (see
+[change levels](#size-the-ceremony-change-levels)) and skips the review.
+
 Run the project's full verification suite:
 ```bash
 [test]            # e.g. npm test / vitest run
@@ -206,6 +235,9 @@ multi-round loops where each round catches new artifact drift.
 > (See skill → [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md).)
 
 ## 4. End-of-slice sweep (before saying "done")
+
+For an S or M change the sweep is a one-line task note (plus the map, if files were added or
+moved). For L and XL, the full pass below.
 
 The iteration sweep keeps the *loop* short; this final pass — run *after* it converges to
 APPROVED — makes sure nothing structural was missed:

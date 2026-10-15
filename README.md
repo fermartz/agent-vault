@@ -54,6 +54,13 @@ until that independent pass approves it. Change levels size the ceremony, so a t
 full loop. It includes the real loop, a diagram of every file involved, and the lessons that cost me
 review rounds before I wrote them down.
 
+### Beyond code: [The LLM Wiki](./workflows/llm-wiki.md)
+*Raw sources in, a growing web of linked pages out. The agent keeps it; you read it.*
+
+My notes, meetings, research and open loops live in a markdown wiki the agent maintains. Each source
+is folded into every page it affects when it arrives, so answers get richer over time instead of
+starting from a search every time.
+
 ## Using the skills
 
 Each skill is a self-contained `SKILL.md`. To use one in your own setup, copy its folder into your
@@ -69,8 +76,8 @@ Every doc declares how proven it is, so you know what you're getting:
 
 ## Status
 
-Growing in public. Live today: five playbook principles plus the `.agent/` convention, the
-Blueprint workflow, and eight skills. More of each gets added piece by piece (same way I build
+Growing in public. Live today: six playbook principles plus the `.agent/` convention, two
+workflows (the Blueprint and the LLM Wiki), and nine skills. More of each gets added piece by piece (same way I build
 everything).
 
 ## About

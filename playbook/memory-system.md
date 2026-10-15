@@ -3,8 +3,8 @@ title: "Give the Agent a Memory"
 type: principle
 summary: "An agent's context window is small and resets. Durable knowledge belongs in files, not in the chat."
 maturity: battle-tested
-related-workflows: [the-blueprint]
-related-skills: [agent-init, meeting-to-notes]
+related-workflows: [the-blueprint, llm-wiki]
+related-skills: [agent-init, meeting-to-notes, llm-wiki]
 ---
 
 # Give the Agent a Memory
@@ -38,4 +38,5 @@ one-fact-per-file gives the agent continuity it can't get from context alone.
 - Convention: [Keep the Agent's Brain in One Folder](./the-agent-folder.md) — *where* these files live (`.agent/`)
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) ("The files in play" — memory index, map, tasks, decisions)
 - Related principle: [context-hygiene](./context-hygiene.md) (memory is what lets you keep the live context small)
+- Related principle: [Synthesize When You Write](./write-time-synthesis.md) (the same memory, scaled to everything you know)
 - Skill: [meeting-to-notes](../skills/meeting-to-notes/SKILL.md) (calls become files: transcript as evidence, decisions and tasks in the notes)

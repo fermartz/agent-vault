@@ -5,7 +5,7 @@ metadata:
   version: 0.9.0
   maturity: working
   related-playbook: [memory-system, human-context]
-  related-skills: [video-transcript]
+  related-skills: [video-transcript, llm-wiki]
   tags: [meetings, transcription, notes, memory, agents]
 ---
 

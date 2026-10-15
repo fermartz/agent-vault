@@ -2,7 +2,7 @@
 name: meeting-to-notes
 description: "Turn a meeting recording into durable notes: transcribe it locally, keep the raw transcript as evidence, confirm the takeaways with the user, then update the project notes, tasks and open loops. Use when the user says 'transcribe the meeting', 'read the last audio', 'here's the recording of my call with X', 'I forgot two more audios from the same meeting', or drops a call recording (.m4a, .mp3, .mp4, voice notes) and wants it in their notes, even if they only say 'transcribe it'."
 metadata:
-  version: 0.9.0
+  version: 0.10.0
   maturity: working
   related-playbook: [memory-system, human-context]
   related-skills: [video-transcript, llm-wiki]
@@ -14,6 +14,15 @@ metadata:
 A meeting that isn't written down didn't decide anything. The decisions, the numbers and who owes
 what live in the recording until an agent moves them into files. This is
 [Give the Agent a Memory](../../playbook/memory-system.md) applied to calls.
+
+## Requirements
+
+Same as [video-transcript](../video-transcript/SKILL.md#requirements), minus `yt-dlp` (recordings are local files):
+Python 3.10+, `ffmpeg`, and `uv` or `whisper`.
+
+One-line check: `python3 -c 'import sys; assert sys.version_info >= (3, 10)'; ffmpeg -version | head -1; uv --version || whisper --help | head -1`
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## Procedure
 

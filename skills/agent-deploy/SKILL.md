@@ -2,7 +2,7 @@
 name: agent-deploy
 description: "Let the agent run a web project's operations on Vercel and Cloudflare: link the project, set environment variables, deploy previews and production, connect a domain, and manage DNS records, with a cost check and a human yes before anything billable, public or hard to undo. Use when the user says 'deploy this', 'push it to prod', 'set up the domain', 'point example.com at Vercel', 'add a DNS record', 'add the env var', 'why is the site still showing the old version', or wants hosting or DNS work done without touching a dashboard."
 metadata:
-  version: 0.9.0
+  version: 0.10.0
   maturity: working
   related-playbook: [least-privilege, human-context]
   tags: [deploy, dns, vercel, cloudflare, ops, security, agents]
@@ -13,6 +13,17 @@ metadata:
 The agent does the operations work (deploys, env vars, domains, DNS) so the human never opens a
 dashboard. Every step follows [Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md).
 The examples use Vercel for hosting and Cloudflare for DNS; the rules carry over to any provider.
+
+## Requirements
+
+| Tool | Check | Install |
+|---|---|---|
+| Node.js + npm | `node --version; npm --version` | `brew install node` / `sudo apt install nodejs npm` |
+| Vercel CLI | `vercel --version` | `npm i -g vercel` |
+| Cloudflare access | `wrangler --version`, or the Cloudflare MCP shows in your agent's tool list | `npm i -g wrangler` (macOS and Linux), or connect Cloudflare's MCP server in your agent's MCP settings |
+| dig, curl | `dig -v; curl --version` | preinstalled on macOS / `sudo apt install dnsutils curl` |
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## Access (set up once)
 

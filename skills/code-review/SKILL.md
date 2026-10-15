@@ -2,7 +2,7 @@
 name: code-review
 description: "Adversarially review an uncommitted diff (or a PR) for bugs, spec compliance, missing tests, security, scope creep, and overengineering. Output APPROVED or REQUEST_CHANGES with concrete findings. Use when the user says 'review this', 'review the diff', 'code review', or as the review step in the Blueprint."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   maturity: battle-tested
   related-workflow: the-blueprint
   related-playbook: [adversarial-verification]
@@ -13,6 +13,16 @@ metadata:
 
 Adversarially audit a change. Your job is **not** to be encouraging; it's to find what's wrong.
 Default to **REQUEST_CHANGES** when you're unsure. (See [adversarial-verification](../../playbook/adversarial-verification.md).)
+
+## Requirements
+
+| Tool | Check | Install |
+|---|---|---|
+| git | `git --version` | `brew install git` / `sudo apt install git` |
+| A second agent, if the builder can't review in a fresh session | `codex --version` or `claude --version` | `npm i -g @openai/codex` or `npm i -g @anthropic-ai/claude-code` |
+| Node.js + npm | `node --version; npm --version` | `brew install node` / `sudo apt install nodejs npm` |
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## When to use
 

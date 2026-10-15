@@ -16,9 +16,10 @@ related-skills: [code-review, cross-artifact-sweep]
 
 This is my default operating loop for getting real, production-grade code out of coding agents.
 The headline idea: **one model builds, a *different* model reviews, and nothing ships until an
-independent adversarial pass approves it.** Everything else here exists to keep that loop short
+independent adversarial pass approves it** (unless you switch the audit off). Everything else here exists to keep that loop short
 and honest. (That's for features and risky changes; a typo gets a lighter path, see
-[change levels](#size-the-ceremony-change-levels).)
+[change levels](#size-the-ceremony-change-levels), and the audit is a
+[switch you control](#your-call-the-audit-switch).)
 
 > Drawn from how I built **Delphy Agent** (Tauri + React, 450+ tests) slice by slice. The lessons
 > and failure-modes below are real — they cost me review rounds before I wrote them down.
@@ -61,6 +62,34 @@ run only that level's checks. The human can bump any rating. **When unsure, go o
 > agent ran everything: all 84 screenshot baselines, then the full verify with four production
 > builds. The owner: "for a change of just changing the title it should take less than a minute."
 > Brain now rates every change S/M/L/XL first; a title is an S.
+
+## Your call: the audit switch
+
+The second-agent audit is my default, not a law. You own the trade-off, so it's a switch you can
+flip anytime with one line in your `CLAUDE.md` / `AGENTS.md`:
+
+| Setting | What runs |
+|---|---|
+| `Audit: auto` (default) | S and M skip the audit; L and XL get a second agent |
+| `Audit: always` | every change, even a typo |
+| `Audit: off` | no second-agent audit; the builder still verifies |
+
+For a single change, just say "skip the audit" or "audit this one".
+
+**Why I keep it on.** The builder is the worst judge of its own work. A building model graded its own
+diff "B+, ready to ship"; an independent pass then found real bugs in the same diff. In one day of
+writing this vault's skills, audits caught three real bugs in what looked like a documentation move
+and advice that could have leaked secrets. Skipping can still give good results, and the audit costs
+more tokens and more time. My recommendation: keep `auto`. Simple changes already skip it.
+
+**The rules that keep the switch honest:**
+- The agent never changes the setting or skips an audit on its own; only the human does.
+- A request for one change beats the setting, both ways: "audit this one" runs it even under `off`;
+  "skip the audit" skips it even under `always`.
+- When an L or XL change goes unaudited, the agent says so once ("no audit; this is an XL change")
+  and then respects it.
+- Every skipped audit that the setting would have run is one line in `.agent/decisions.md`, so
+  it's visible later.
 
 ## The loop
 
@@ -180,7 +209,8 @@ details (state machines, pseudocode, exact type signatures, message shapes) belo
 ## 2. Before you finish
 
 This section is the L and XL path. An S or M change runs only its level's checks (see
-[change levels](#size-the-ceremony-change-levels)) and skips the review.
+[change levels](#size-the-ceremony-change-levels)) and skips the review, unless the
+[audit switch](#your-call-the-audit-switch) says `always`.
 
 Run the project's full verification suite:
 ```bash
@@ -209,8 +239,9 @@ whatever you have (`gemini`). Only one tool? A **fresh session of the same model
 adversarial prompt is weaker but far better than self-review in the same conversation — the bias
 to defend is mostly *context* attachment, only partly model identity.
 
-The tool is your choice; the audit itself is not, for L and XL. S and M changes skip it
-([change levels](#size-the-ceremony-change-levels)), so small work never waits on a second agent.
+The tool is your choice, and so is the audit itself: under the default `Audit: auto`, S and M
+changes skip it so small work never waits on a second agent, and L and XL get it. To change that,
+use [the audit switch](#your-call-the-audit-switch).
 
 - **REQUEST_CHANGES** → read the review, fix blockers, run the sweep (§3), re-verify, re-review.
 - **APPROVED** → proceed. Record the verdict in the task's DONE entry.

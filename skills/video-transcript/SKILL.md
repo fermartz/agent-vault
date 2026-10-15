@@ -2,7 +2,7 @@
 name: video-transcript
 description: "Extract the spoken text from a video or audio file so it can be read, discussed and checked. Use when the user pastes a link to Instagram, Facebook, X, TikTok, YouTube or similar and says 'transcribe this', 'extract the text', 'what does this video say', 'here's a video about X, let's talk about it', or drops a video URL with little other context. Also handles local .mp4/.mp3/.m4a files, and is the transcription step of meeting-to-notes."
 metadata:
-  version: 0.9.0
+  version: 0.10.0
   maturity: working
   related-playbook: [memory-system]
   tags: [research, media, transcription, ingest]
@@ -12,6 +12,20 @@ metadata:
 
 A video is not a source until someone has read what it says. This turns one into text, locally, in
 seconds to a few minutes.
+
+## Requirements
+
+| Tool | Check | Install (macOS / Linux) |
+|---|---|---|
+| Python 3.10+ | `python3 -c 'import sys; assert sys.version_info >= (3, 10)'` | `brew install python` / `sudo apt install python3` (3.10+; older distros need a newer Python) |
+| ffmpeg | `ffmpeg -version` | `brew install ffmpeg` / `sudo apt install ffmpeg` |
+| pipx (Linux only, for the next rows) | `pipx --version` | `sudo apt install pipx && pipx ensurepath` |
+| yt-dlp (links only) | `yt-dlp --version` | `brew install yt-dlp` / `pipx install yt-dlp` |
+| uv (preferred) or whisper | `uv --version` or `whisper --help` | `brew install uv` / `pipx install uv`, or `pipx install openai-whisper` |
+
+One-line check: `python3 -c 'import sys; assert sys.version_info >= (3, 10)'; ffmpeg -version | head -1; yt-dlp --version; uv --version || whisper --help | head -1`
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## The command
 
@@ -32,15 +46,17 @@ python3 <this-skill-folder>/vidtext.py <url-or-file>
    under a video often carries the links, the disclosure and the sales pitch, so it's kept next to
    the speech.
 2. **Takes the platform's captions if they exist.** Seconds, and free.
-3. **Otherwise downloads the audio and transcribes it on your machine** (mlx-whisper on Apple
-   Silicon, falling back to openai-whisper). Nothing is uploaded anywhere.
+3. **Otherwise downloads the audio and transcribes it on your machine**: mlx-whisper on Apple
+   Silicon, openai-whisper everywhere else (the installed `whisper` command, or run through `uv`).
+   Nothing is uploaded anywhere. The first run downloads the model, which takes a while.
 4. **Writes a markdown file with provenance frontmatter** and prints its path.
 
 **Signed-in content.** Logged-out fetches fail on Instagram, Facebook and X. The script tries
 without cookies first, then uses the cookies of a browser you're signed into (Chrome, Brave, Safari,
 Firefox, Edge) and says which one it used. That is your own session reading content you can already
 see; it never stores or sends the cookies anywhere else. If every browser fails, the post is private,
-deleted, or needs a login you don't have.
+deleted, or needs a login you don't have. **Inside WSL** the browsers live on the Windows side, so
+this fallback finds none: use public links or local files there, or run the skill natively.
 
 ## A bigger model is a second opinion, not an upgrade
 
@@ -79,8 +95,3 @@ seconds reads thin on the page, and that gap is the useful part. Report:
 
 A social video is navigation, a pointer to something worth checking, and never the source of a
 number. The best thing it offers is a question: *is the thing this person is excited about true?*
-
-## Requirements
-
-`yt-dlp`, `ffmpeg`, and either `uv` (preferred, pulls mlx-whisper on first run) or `whisper`.
-On macOS: `brew install yt-dlp ffmpeg`.

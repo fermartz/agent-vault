@@ -2,7 +2,7 @@
 name: skill-builder
 description: "Turn something the user does over and over with an agent into a reusable SKILL.md: capture the real workflow from the conversation (or interview the user one question at a time when there's nothing to extract), write the skill with a description that triggers, strip anything private, run the checks, get a second agent to review it, and install it. Use when the user says 'make this a skill', 'turn this into a skill', 'add this to my skills', 'write a skill for X', 'help me make a skill', 'publish this workflow', or after a workflow has been repeated enough that it should be written down, even if they don't say the word skill."
 metadata:
-  version: 0.9.0
+  version: 0.10.0
   maturity: working
   related-playbook: [adversarial-verification, least-privilege, human-context]
   related-skills: [code-review]
@@ -14,6 +14,17 @@ metadata:
 A skill is a workflow you stopped explaining. Write it down once, the way you actually do it, and
 every future agent starts from there instead of from zero. These are the rules this repo's skills
 were written under, and the mistakes that cost review rounds along the way.
+
+## Requirements
+
+Only for the checker script: Python 3.10+ and PyYAML.
+
+| Tool | Check | Install |
+|---|---|---|
+| Python 3.10+ | `python3 -c 'import sys; assert sys.version_info >= (3, 10)'` | `brew install python` / `sudo apt install python3` (3.10+; older distros need a newer Python) |
+| PyYAML | `python3 -c "import yaml"` | `python3 -m pip install pyyaml`; if your system Python refuses ("externally managed"), use a virtualenv (on Debian/Ubuntu first `sudo apt install python3-venv`): `python3 -m venv ~/.venvs/skills && ~/.venvs/skills/bin/pip install pyyaml`, then run the checker with `~/.venvs/skills/bin/python` |
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## 1. Start from the real thing
 
@@ -77,7 +88,9 @@ is fine for nuance (and for when *not* to use it), but the agent only sees the b
 the skill.
 
 **The body**, in this order: one paragraph on why the skill exists (link the principle it applies);
-the procedure as numbered steps; notes; and a "Never" list only if the skill touches money, secrets
+a **Requirements** section if it needs any tool beyond git (a table with the check and install
+commands, and the rule to check before the first run and ask before installing); the procedure as
+numbered steps; notes; and a "Never" list only if the skill touches money, secrets
 or anything public. Explain the reason behind a rule instead of shouting it: an agent that knows
 *why* handles the case the rule didn't foresee. Keep it under ~500 lines; move long reference
 material to `references/` and say when to read it.

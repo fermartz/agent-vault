@@ -2,7 +2,7 @@
 name: blueprint
 description: "Run a non-trivial coding change through plan → build → verify → review, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   maturity: battle-tested
   related-workflow: the-blueprint
   tags: [workflow, planning, code-review, verification, agents]
@@ -13,6 +13,18 @@ metadata:
 Execute the Blueprint loop. This is the agent-facing, do-this version of
 [`workflows/the-blueprint.md`](../../workflows/the-blueprint.md) — read that for the *why*,
 the diagram, and the lessons behind each step.
+
+## Requirements
+
+| Tool | Check | Install |
+|---|---|---|
+| git | `git --version` | `brew install git` / `sudo apt install git` |
+| Node.js + npm (only to install a second agent) | `node --version; npm --version` | `brew install node` / `sudo apt install nodejs npm` |
+| A second agent for the audit (any one) | `codex --version` or `claude --version` | `npm i -g @openai/codex` or `npm i -g @anthropic-ai/claude-code` |
+
+No second agent? A fresh session of the same one works (step 5), or set `Audit: off`.
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## When to use
 
@@ -28,7 +40,7 @@ loop runs. Throwaway scripts need none of it.
 recon → plan → build → verify → review → (fix → class-sweep → verify → re-review)* → approve
 ```
 One model builds; a **different** model reviews. At L and XL, nothing ships until the independent
-review approves.
+review approves, unless the user turned the audit off or skipped it for this change (step 0).
 
 ## Procedure
 
@@ -40,6 +52,13 @@ review approves.
    - **L, feature**: recon and a plan when the change is non-trivial; review.
    - **XL, risky** (security, auth, data writes, a dependency, a schema, the project's boundary
      files, whatever their size): recon, a plan and the review are all required.
+   **Audit setting:** read `Audit:` from the project's instruction file (`auto` if absent; `always`
+   adds the audit at S and M; `off` drops it). The user's request for one change beats the setting,
+   both ways: "audit this one" runs it even under `off`, "skip the audit" skips it even under
+   `always`. Never change the setting yourself. When an L/XL change goes unaudited, say so once,
+   then respect it. Log every skipped audit that the setting would have run in
+   `.agent/decisions.md`. Why it exists:
+   [the audit switch](../../workflows/the-blueprint.md#your-call-the-audit-switch).
    Each step below says what it runs at each level. Never S or M: anything on the XL list, or a
    rename, move or removal of anything the docs describe (that is at least L). The rating sets the checks
    only; step 8 still holds.
@@ -74,7 +93,7 @@ review approves.
      end-to-end; a green suite proves the tests pass, not that the feature works.
    Fix anything red before moving on.
 
-5. **Hand off to the reviewer** (L and XL only) — give the user an adversarial review command for a *second* model:
+5. **Hand off to the reviewer** (whenever step 0's audit setting, after any per-change request, says to run it) — give the user an adversarial review command for a *second* model:
    ```
    codex exec "Review the uncommitted diff. Plan: <plan-file>. Check: spec compliance, bugs,
    missing tests, security, scope creep, overengineering. Do not modify any project files —
@@ -85,7 +104,7 @@ review approves.
    Claude Code, Claude Code if you built with Codex (`claude -p "<the same prompt>"`), or any other
    model (`gemini`). If only one is available, use a **fresh session of the same model** with the
    same prompt: weaker, but far better than self-review in the same conversation. The tool is the
-   user's choice; the audit is not, for L and XL (S and M skip it).
+   user's choice, and so is whether to audit, through the audit setting in step 0.
 
 6. **If REQUEST_CHANGES** — read the review, then **fix the class, not the instance**: identify
    each finding's defect *category* and audit everywhere that category can live before revising

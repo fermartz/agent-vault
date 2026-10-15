@@ -2,7 +2,7 @@
 name: llm-wiki
 description: "Run a personal knowledge wiki in plain markdown + git that the agent maintains: ingest sources (links, papers, pastes, meeting transcripts, 'I did X today') into raw evidence plus linked pages, answer questions from the pages, and lint the whole thing. Use when the user says 'ingest this', 'add this to the wiki', 'save this', 'what does the wiki say about X', 'lint the wiki', 'set up a wiki / second brain / knowledge base', or shares a source or a fact about their projects in a repo that has a SCHEMA.md and index.md."
 metadata:
-  version: 0.9.0
+  version: 0.10.0
   maturity: working
   related-workflow: llm-wiki
   related-playbook: [write-time-synthesis, memory-system, human-context]
@@ -15,6 +15,15 @@ metadata:
 The executable twin of [The LLM Wiki](../../workflows/llm-wiki.md). Raw sources are evidence; pages
 are where the synthesis lives; `index.md` and `log.md` are the backbone. The thinking happens at
 ingest, per [Synthesize When You Write](../../playbook/write-time-synthesis.md).
+
+## Requirements
+
+| Tool | Check | Install |
+|---|---|---|
+| git | `git --version` | `brew install git` / `sudo apt install git` |
+| qmd (optional, better search) | `qmd --version` | see [its README](https://github.com/tobi/qmd); without it, search falls back to grep + `index.md` |
+
+**Check before the first run.** Run the check command. If anything is missing, tell the user exactly what and the install command, and **ask before installing anything**: installing changes their machine ([Hand Over Keys, Not the Keyring](../../playbook/least-privilege.md)). On Windows, use WSL or the commands in [getting started](../../docs/getting-started.md#windows).
 
 ## Startup (every session, before any operation)
 

@@ -21,6 +21,7 @@ typos; adversarial review catches the things you were too close to see.
 ## In practice
 
 - Builder = whatever agent you build with. Reviewer = a **different** one: Codex if you built with Claude Code, Claude Code if you built with Codex. Only one tool? A fresh session of it, with no shared context.
+- It's the default, and the human's call. A project can set the audit to `auto`, `always` or `off` ([the audit switch](../workflows/the-blueprint.md#your-call-the-audit-switch)); the agent never turns it off by itself.
 - The review prompt is adversarial on purpose: "try to refute this; default to REQUEST_CHANGES if unsure."
 - The same pattern works beyond code: vetting findings, pressure-testing a plan, fact-checking research. Generate with one lens, attack with another.
 

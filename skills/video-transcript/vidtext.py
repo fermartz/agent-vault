@@ -16,6 +16,7 @@ writes into the current repo unless you pass --out, so it cannot pollute a wiki
 or a research directory by accident.
 """
 import argparse
+import platform
 import json
 import os
 import re
@@ -47,7 +48,15 @@ def sh(cmd, quiet=True):
     )
 
 
+APPLE_SILICON = platform.system() == "Darwin" and platform.machine() == "arm64"
+
+
 def installed_browsers():
+    if platform.system() != "Darwin":
+        # yt-dlp finds each browser's profile itself on Windows and Linux, and fails fast
+        # when one isn't there. Inside WSL the browsers live on the Windows side, so this
+        # finds nothing and login-gated posts need a public link or a local file instead.
+        return ["chrome", "brave", "firefox", "edge", "chromium"]
     apps = {
         "chrome": "Google Chrome",
         "brave": "Brave Browser",
@@ -131,9 +140,9 @@ def get_audio(url, work: Path):
 
 
 def transcribe(audio: Path, model: str, lang: str | None, work: Path) -> tuple[str, str]:
-    """mlx-whisper is several times faster on Apple Silicon; fall back to openai-whisper."""
+    """mlx-whisper on Apple Silicon (several times faster); openai-whisper everywhere else."""
     lang_args = ["--language", lang] if lang else []
-    if shutil.which("uv"):
+    if APPLE_SILICON and shutil.which("uv"):
         r = sh([
             "uv", "run", "--quiet", "--with", "mlx-whisper", "mlx_whisper",
             str(audio), "--model", MODELS.get(model, model),
@@ -142,16 +151,20 @@ def transcribe(audio: Path, model: str, lang: str | None, work: Path) -> tuple[s
         txt = work / (audio.stem + ".txt")
         if r.returncode == 0 and txt.exists():
             return txt.read_text().strip(), f"mlx-whisper {model}"
-    if shutil.which("whisper"):
+    # openai-whisper: the installed command if there is one, else through uv (no global install).
+    runner = (["whisper"] if shutil.which("whisper")
+              else ["uv", "run", "--quiet", "--with", "openai-whisper", "whisper"] if shutil.which("uv")
+              else None)
+    if runner:
         r = sh([
-            "whisper", str(audio), "--model", model,
+            *runner, str(audio), "--model", model,
             "--output_format", "txt", "--output_dir", str(work), *lang_args,
         ])
         txt = work / (audio.stem + ".txt")
         if r.returncode == 0 and txt.exists():
             return txt.read_text().strip(), f"openai-whisper {model}"
         sys.exit(f"transcription failed.\n{(r.stderr or '')[-1500:]}")
-    sys.exit("no whisper available. Install uv, or: brew install openai-whisper")
+    sys.exit("no whisper available. Install uv (preferred) or openai-whisper; see the skill's Requirements.")
 
 
 def main():

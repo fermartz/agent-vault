@@ -11,6 +11,7 @@ point back up to these.
 | [Don't Grade Your Own Homework](./adversarial-verification.md) | The model that built it is the wrong one to judge it. Use a different model to attack it. |
 | [Protect the Context](./context-hygiene.md) | An agent reasons best with a small, relevant window. One slice at a time. |
 | [Synthesize When You Write, Not When You Search](./write-time-synthesis.md) | Fold each source into the pages it affects when it arrives, so knowledge compounds instead of being re-searched. |
+| [Hand Over Keys, Not the Keyring](./least-privilege.md) | An agent that runs your ops holds real keys. Scope them, keep secrets out of the chat, ask before anything billable or irreversible. |
 | [Protect the Human's Context](./human-context.md) | Your attention is a window too. Short by default, teach in bites, deep only on request. |
 
 *More principles get added as I write them down — section-by-section, smallest-clean-change, code-wins-over-docs, build-in-public.*

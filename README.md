@@ -76,8 +76,8 @@ Every doc declares how proven it is, so you know what you're getting:
 
 ## Status
 
-Growing in public. Live today: six playbook principles plus the `.agent/` convention, two
-workflows (the Blueprint and the LLM Wiki), and nine skills. More of each gets added piece by piece (same way I build
+Growing in public. Live today: seven playbook principles plus the `.agent/` convention, two
+workflows (the Blueprint and the LLM Wiki), and ten skills. More of each gets added piece by piece (same way I build
 everything).
 
 ## About

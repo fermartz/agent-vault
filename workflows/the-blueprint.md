@@ -271,7 +271,7 @@ Do not commit unless explicitly asked.
 - Don't refactor surrounding code unless the task is refactoring.
 - No abstractions for hypothetical future needs. No error handling for impossible cases.
 - Default to no comments — only when the *why* is non-obvious.
-- Never touch secrets/.env. Don't change unrelated formatting. Preserve docs/examples unless that's the task.
+- Never touch secrets/.env ([Hand Over Keys, Not the Keyring](../playbook/least-privilege.md)). Don't change unrelated formatting. Preserve docs/examples unless that's the task.
 
 ## Review expectations (what the reviewer checks)
 

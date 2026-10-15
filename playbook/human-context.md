@@ -4,7 +4,7 @@ type: principle
 summary: "Your attention is a context window too. The agent answers short by default, teaches in bites, and gives the deep version only when you ask."
 maturity: battle-tested
 related-workflows: []
-related-skills: [teach-in-bites, meeting-to-notes]
+related-skills: [teach-in-bites, meeting-to-notes, skill-builder]
 ---
 
 # Protect the Human's Context
@@ -66,4 +66,5 @@ For lessons, use the [teach-in-bites](../skills/teach-in-bites/SKILL.md) skill.
 
 - Skill: [teach-in-bites](../skills/teach-in-bites/SKILL.md)
 - Skill: [meeting-to-notes](../skills/meeting-to-notes/SKILL.md) (takeaways short, confirmed before the notes change)
+- Skill: [skill-builder](../skills/skill-builder/SKILL.md) (guided mode asks one question at a time)
 - Related principle: [Protect the Context](./context-hygiene.md) (the agent's window; this is yours)

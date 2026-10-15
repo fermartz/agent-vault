@@ -4,7 +4,7 @@ type: principle
 summary: "An agent that deploys, sets DNS and sends email holds real keys and spends real money. Give it the narrowest access that does the job, keep secrets out of the conversation, and make it ask before anything that costs money or can't be undone."
 maturity: working
 related-workflows: [the-blueprint]
-related-skills: [agent-deploy]
+related-skills: [agent-deploy, skill-builder]
 ---
 
 # Hand Over Keys, Not the Keyring
@@ -57,5 +57,6 @@ the most powerful key in reach. Least privilege makes each of those mistakes sma
 ## Where it shows up
 
 - Skill: [agent-deploy](../skills/agent-deploy/SKILL.md)
+- Skill: [skill-builder](../skills/skill-builder/SKILL.md) (skills that touch providers inherit these rules)
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) (security, auth and data writes are always XL)
 - Related principle: [Protect the Human's Context](./human-context.md) (a confirmation is one clear line, not a page)

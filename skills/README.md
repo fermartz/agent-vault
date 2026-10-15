@@ -14,6 +14,7 @@ Loadable `SKILL.md` tools. To use one, copy its folder into your project's `.cla
 | [llm-wiki](./llm-wiki/SKILL.md) | Ingest, query and lint a markdown + git wiki the agent maintains (the executable twin of [The LLM Wiki](../workflows/llm-wiki.md)) |
 | [meeting-to-notes](./meeting-to-notes/SKILL.md) | Turn a call recording into notes: local transcript kept as evidence, takeaways confirmed, then tasks and open loops updated |
 | [video-transcript](./video-transcript/SKILL.md) | Pull the spoken text out of a social video or a local audio/video file, locally, and say what it actually claims |
+| [skill-builder](./skill-builder/SKILL.md) | Turn a workflow you keep repeating into a shareable skill: extract it, write it, strip private details, check, review, install |
 | [teach-in-bites](./teach-in-bites/SKILL.md) | Teach a topic one bite at a time, the human sets the pace, then file the lesson as a primer |
 
 *More skills get added as I extract the ones I reach for most.*

@@ -4,7 +4,7 @@ type: principle
 summary: "The model that built something is the wrong one to judge it. Use a different model as an adversarial reviewer."
 maturity: battle-tested
 related-workflows: [the-blueprint]
-related-skills: [code-review, cross-artifact-sweep]
+related-skills: [code-review, cross-artifact-sweep, skill-builder]
 ---
 
 # Don't Grade Your Own Homework
@@ -35,4 +35,4 @@ typos; adversarial review catches the things you were too close to see.
 ## Where it shows up
 
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) (the review step is the heart of the loop)
-- Skills: [code-review](../skills/code-review/SKILL.md), [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md)
+- Skills: [code-review](../skills/code-review/SKILL.md), [cross-artifact-sweep](../skills/cross-artifact-sweep/SKILL.md), [skill-builder](../skills/skill-builder/SKILL.md) (every new skill gets a second-agent review)

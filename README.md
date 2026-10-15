@@ -9,7 +9,8 @@ playbook** behind that: the operating system I use to get real, reviewed work ou
 just demos.
 
 Everything here is battle-tested on real products ([Delphy](https://delphy.network),
-[AstraNova](https://astranova.live), [fermartz.com](https://fermartz.com)), with honest notes on
+[SUPERPOWERS](https://superpowers.network), [Summer AI](https://summerai.network),
+[fermartz.com](https://fermartz.com)), with honest notes on
 what worked and what I'd skip. The mistakes are written down on purpose: the "Receipt" and
 "Failure mode" callouts are the parts you can't get from a tutorial.
 
@@ -65,6 +66,7 @@ starting from a search every time.
 
 Each skill is a self-contained `SKILL.md`. To use one in your own setup, copy its folder into your
 project's `.claude/skills/` (or `~/.claude/skills/` for all projects), and your agent can invoke it.
+To write your own, load [skill-builder](./skills/skill-builder/SKILL.md).
 
 ## Maturity legend
 
@@ -77,7 +79,7 @@ Every doc declares how proven it is, so you know what you're getting:
 ## Status
 
 Growing in public. Live today: seven playbook principles plus the `.agent/` convention, two
-workflows (the Blueprint and the LLM Wiki), and ten skills. More of each gets added piece by piece (same way I build
+workflows (the Blueprint and the LLM Wiki), and eleven skills. More of each gets added piece by piece (same way I build
 everything).
 
 ## About

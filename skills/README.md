@@ -10,6 +10,7 @@ Loadable `SKILL.md` tools. To use one, copy its folder into your project's `.cla
 | [code-review](./code-review/SKILL.md) | Adversarially review a diff and return APPROVED / REQUEST_CHANGES with findings |
 | [cross-artifact-sweep](./cross-artifact-sweep/SKILL.md) | After a fix, keep docs/memory in sync with the code so review loops stay short |
 | [public-repo-audit](./public-repo-audit/SKILL.md) | Audit a whole repo as a skeptical external engineer: quality, security, CI, tests, hygiene |
+| [teach-in-bites](./teach-in-bites/SKILL.md) | Teach a topic one bite at a time, the human sets the pace, then file the lesson as a primer |
 
 *More skills get added as I extract the ones I reach for most.*
 

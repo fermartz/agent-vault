@@ -1,6 +1,6 @@
 # Playbook — the *why*
 
-The principles behind how I work with coding agents. Each page is a short, quotable conviction:
+The principles behind how I work with AI agents. Each page is a short, quotable conviction:
 the belief, why I hold it, how it shows up in practice, and a real receipt. Workflows and skills
 point back up to these.
 
@@ -10,6 +10,7 @@ point back up to these.
 | [A Plan Is a Contract, Not a Spec](./plan-build-review.md) | Plan the *what* and *why*. Leave *how* to the code. |
 | [Don't Grade Your Own Homework](./adversarial-verification.md) | The model that built it is the wrong one to judge it. Use a different model to attack it. |
 | [Protect the Context](./context-hygiene.md) | An agent reasons best with a small, relevant window. One slice at a time. |
+| [Protect the Human's Context](./human-context.md) | Your attention is a window too. Short by default, teach in bites, deep only on request. |
 
 *More principles get added as I write them down — section-by-section, smallest-clean-change, code-wins-over-docs, build-in-public.*
 

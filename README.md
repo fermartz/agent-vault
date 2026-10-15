@@ -1,10 +1,12 @@
 # agent-vault
 
-*How I actually work with coding agents.*
+*How I actually work with AI agents. Coding first, and now most of everything else.*
 
 I build and ship production software with coding agents (Claude Code, Codex) as my primary
-interface. This is the curated set of **workflows, skills, and the playbook** behind that: the
-operating system I use to get real, reviewed, production-grade code out of agents, not just demos.
+interface. Over time the same agent took over most of the rest of my work too: my notes, my
+meetings, what I learn, my deploys and DNS. This is the curated set of **workflows, skills, and the
+playbook** behind that: the operating system I use to get real, reviewed work out of agents, not
+just demos.
 
 Everything here is battle-tested on real products ([Delphy](https://delphy.network),
 [AstraNova](https://astranova.live), [fermartz.com](https://fermartz.com)), with honest notes on
@@ -37,12 +39,12 @@ skills it uses; every skill points back to the principle behind it. Enter from a
 
 - **You want a tool you can use today** -> browse [`skills/`](./skills) and
   [`workflows/`](./workflows), copy what's useful.
-- **You want to see how I think** (hiring managers, this is you) -> start with the **Playbook**
-  and the flagship workflow below. The tools are the receipts; the thinking is the point.
+- **You want to see how I think** -> start with the **Playbook** and the flagship workflow
+  below. The tools are the receipts; the thinking is the point.
 
 ## Start here: The Blueprint
 
-The one workflow that captures my whole approach:
+The workflow that captures how I build software:
 
 ### → [The Blueprint](./workflows/the-blueprint.md)
 *Plan → build → verify → review → ship, with a second model as the skeptic.*
@@ -67,8 +69,8 @@ Every doc declares how proven it is, so you know what you're getting:
 
 ## Status
 
-Growing in public. Live today: four playbook principles plus the `.agent/` convention, the
-Blueprint workflow, and five skills. More of each gets added piece by piece (same way I build
+Growing in public. Live today: five playbook principles plus the `.agent/` convention, the
+Blueprint workflow, and six skills. More of each gets added piece by piece (same way I build
 everything).
 
 ## About

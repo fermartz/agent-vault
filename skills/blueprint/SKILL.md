@@ -2,7 +2,7 @@
 name: blueprint
 description: "Run a non-trivial coding change through plan → build → verify → review, with a second model as an adversarial reviewer. Use when the user says 'use the blueprint' / 'run the blueprint' / 'plan and build this properly', or starts a non-trivial feature, refactor, or subsystem that should be planned, reviewed, and verified before shipping."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   maturity: battle-tested
   related-workflow: the-blueprint
   tags: [workflow, planning, code-review, verification, agents]
@@ -81,9 +81,11 @@ review approves.
    the only file you may create is the review report. Output ONLY APPROVED or REQUEST_CHANGES
    + a one-line summary; if REQUEST_CHANGES, write details to .agent/reviews/<task>.md"
    ```
-   Codex is an example — any second model works (`gemini`, a separate Claude Code session). If
-   none is available, use a **fresh session of the same model** with the same prompt: weaker,
-   but far better than self-review in the same conversation.
+   Codex is an example. The auditor is whichever agent did *not* build: Codex if you built with
+   Claude Code, Claude Code if you built with Codex (`claude -p "<the same prompt>"`), or any other
+   model (`gemini`). If only one is available, use a **fresh session of the same model** with the
+   same prompt: weaker, but far better than self-review in the same conversation. The tool is the
+   user's choice; the audit is not, for L and XL (S and M skip it).
 
 6. **If REQUEST_CHANGES** — read the review, then **fix the class, not the instance**: identify
    each finding's defect *category* and audit everywhere that category can live before revising

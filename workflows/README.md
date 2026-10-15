@@ -1,6 +1,6 @@
 # Workflows — the *how*
 
-Repeatable, end-to-end recipes for running real work through coding agents. Each one cites the
+Repeatable, end-to-end recipes for running real work through AI agents. Each one cites the
 [playbook](../playbook) principles it applies and the [skills](../skills) it uses, and ships with a
 diagram of the files in play.
 

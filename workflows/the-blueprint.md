@@ -71,8 +71,8 @@ recon → plan → build → verify → review → (fix → class-sweep → veri
 | Role | Who |
 |---|---|
 | **Planner** | You (or an agent driving the workflow) — writes the plan, gets approval |
-| **Builder** | The coding agent (e.g. Claude Code) — implements |
-| **Reviewer** | A *different* model (e.g. Codex CLI) — audits the diff adversarially |
+| **Builder** | The agent you build with (Claude Code, Codex, any other) — implements |
+| **Reviewer** | The auditor: a *different* agent with no shared context — Codex if you built with Claude Code, Claude Code if you built with Codex — audits the diff adversarially |
 | **Approver** | You — final sign-off |
 
 Using a second model as reviewer is the whole point: the builder is biased toward "it works";
@@ -95,9 +95,9 @@ flowchart TD
 
   mem --> PLAN[".agent/plans/&lt;task&gt;.md — the contract (what + why)"]
   SOT --> PLAN
-  PLAN --> BUILD["Builder · Claude Code"]
+  PLAN --> BUILD["Builder · the agent you build with"]
   BUILD --> CODE["code + tests"]
-  CODE --> REVIEW{"Reviewer · Codex"}
+  CODE --> REVIEW{"Reviewer · a different agent"}
   PLAN --> REVIEW
   REVIEW -->|REQUEST_CHANGES| RVW[".agent/reviews/&lt;task&gt;.md — findings"]
   RVW --> FIX["fix + cross-artifact sweep"]
@@ -203,10 +203,14 @@ REQUEST_CHANGES followed by a one-line summary. If REQUEST_CHANGES, write full d
 ```
 
 `codex exec` is just my current second model — the requirement is **a different model with no
-shared context**, not Codex specifically. Swap in whatever you have (`gemini`, a separate Claude
-Code session). No second model installed? A **fresh session of the same model** with the same
+shared context**, not Codex specifically. It works both ways: build with Claude Code and audit with
+Codex, or build with Codex and audit with Claude Code (`claude -p "<the same prompt>"`), or swap in
+whatever you have (`gemini`). Only one tool? A **fresh session of the same model** with the same
 adversarial prompt is weaker but far better than self-review in the same conversation — the bias
 to defend is mostly *context* attachment, only partly model identity.
+
+The tool is your choice; the audit itself is not, for L and XL. S and M changes skip it
+([change levels](#size-the-ceremony-change-levels)), so small work never waits on a second agent.
 
 - **REQUEST_CHANGES** → read the review, fix blockers, run the sweep (§3), re-verify, re-review.
 - **APPROVED** → proceed. Record the verdict in the task's DONE entry.

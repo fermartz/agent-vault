@@ -37,3 +37,4 @@ sub-agents that return conclusions instead of raw material.
 
 - Workflow: [The Blueprint](../workflows/the-blueprint.md) (smallest clean change; one slice at a time)
 - Related principle: [memory-system](./memory-system.md) (files hold what the window shouldn't)
+- Related principle: [Protect the Human's Context](./human-context.md) (the same rule for the human's attention)

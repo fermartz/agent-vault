@@ -1,8 +1,8 @@
 ---
 name: public-repo-audit
-description: "Audit an entire public repository the way a skeptical senior engineer (or a recruiter evaluating a hire) would read it. Grade code quality, security, tooling rigor, tests, and hygiene; report findings with severity + file:line. Use when the user says 'audit this repo', 'review the whole codebase', 'is this repo interview-ready', or wants a public repo hardened before sharing."
+description: "Audit an entire public repository the way a skeptical senior engineer would read it before trusting it. Grade code quality, security, tooling rigor, tests, and hygiene; report findings with severity + file:line. Use when the user says 'audit this repo', 'review the whole codebase', 'is this repo ready to share', or wants a public repo hardened before sharing."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   maturity: battle-tested
   related-workflow: the-blueprint
   related-playbook: [adversarial-verification]
@@ -12,12 +12,12 @@ metadata:
 # public-repo-audit
 
 Read the whole repo as a **skeptical external engineer** would: someone deciding whether this
-person is worth hiring, or whether this library is worth trusting. Your job is to find what *caps
+code is worth depending on, or whether this library is worth trusting. Your job is to find what *caps
 the impression* in the first ten minutes, not to be encouraging. Assume the reader is sharp.
 
 ## When to use
 
-The user says "audit this repo", "review the whole codebase", "is this interview-ready", or wants
+The user says "audit this repo", "review the whole codebase", "is this ready to share", or wants
 a public repo hardened before it's shared. **Not** for a single diff — use [code-review](../code-review/SKILL.md) for that.
 
 ## Scope
